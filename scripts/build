@@ -9,7 +9,7 @@ if [ "$0" != "./scripts/build" ]; then
   exit 1
 fi
 
-echo "Removing existing binaries..."
+echo "Removing existing build..."
 rm -rf ./bin && mkdir ./bin
 
 if [ "$?" -ne "0" ]; then
