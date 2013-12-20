@@ -1,0 +1,39 @@
+{
+  "name": "obsidian",
+  "preferGlobal": false,
+  "version": "0.0.1",
+  "author": "Predrag Gruevski <predrag.gruevski@gmail.com>",
+  "description": "Language analysis system",
+  "contributors": [
+    {
+      "name": "Predrag Gruevski",
+      "email": "predrag.gruevski@gmail.com"
+    }
+  ],
+  "scripts": {
+    "start": "chmod +x ./scripts/start && ./scripts/start",
+    "test": "chmod +x ./scripts/test && ./scripts/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obi1kenobi/obsidian.git"
+  },
+  "dependencies": {
+    "amqplib"     :   "0.1.1",
+    "async"       :   "0.2.9",
+    "colors"      :   "*",
+    "lazy"        :   "1.0.11",
+    "natural"     :   "0.1.25",
+    "optimist"    :   "0.6.0",
+    "redis"       :   "0.9.2",
+    "underscore"  :   "1.5.2"
+  },
+  "devDependencies": {
+    "chai"        :   "*",
+    "mocha"       :   "*"
+  },
+  "license": "proprietary",
+  "engines": {
+    "node": ">=0.10.24"
+  }
+}
