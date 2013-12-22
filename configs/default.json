@@ -1,0 +1,31 @@
+{
+  "test_value": true,
+  "rabbitmq": {
+    "connection": {
+      "address": "amqp://localhost:5672",
+      "options": {
+        "frameMax": 4096,
+        "heartbeat": 0
+      }
+    },
+    "exchanges": [
+      {
+        "name": "obsidian.lineExchange",
+        "type": "fanout",
+        "options": {
+          "durable": true
+        }
+      }
+    ],
+    "queues": [
+      {
+        "name": "obsidian.lineQueue",
+        "exchangeBinding": "obsidian.lineExchange",
+        "routingKey": "*",
+        "options": {
+          "durable": true
+        }
+      }
+    ]
+  }
+}
