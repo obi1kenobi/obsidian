@@ -1,30 +1,83 @@
 {
   "test_value": true,
-  "rabbitmq": {
+  "rabbit": {
+    "reconnectInterval": 2000,
     "connection": {
-      "address": "amqp://localhost:5672",
       "options": {
-        "frameMax": 4096,
-        "heartbeat": 0
+        "host": "localhost",
+        "port": 5672,
+        "login": "guest",
+        "password": "guest",
+        "vhost": "/"
+      },
+      "implOptions": {
+        "reconnect": true,
+        "reconnectBackoffStrategy": "linear",
+        "reconnectBackoffTime": 1000
       }
     },
     "exchanges": [
       {
         "name": "obsidian.lineExchange",
-        "type": "fanout",
         "options": {
-          "durable": true
+          "type": "fanout",
+          "durable": true,
+          "confirm": true,
+          "autoDelete": false
+        },
+        "publishOptions": {
+          "contentType": "application/json",
+          "deliveryMode": 2
+        }
+      },
+      {
+        "name": "obsidian.testExchange",
+        "options": {
+          "type": "fanout",
+          "durable": true,
+          "confirm": true,
+          "autoDelete": false
+        },
+        "publishOptions": {
+          "contentType": "application/json",
+          "deliveryMode": 2
         }
       }
     ],
     "queues": [
       {
         "name": "obsidian.lineQueue",
-        "exchangeBinding": "obsidian.lineExchange",
-        "routingKey": "*",
         "options": {
-          "durable": true
-        }
+          "durable": true,
+          "autoDelete": false
+        },
+        "subscribeOptions": {
+          "ack": true,
+          "prefetchCount": 4
+        },
+        "bindings": [
+          {
+            "exchange": "obsidian.lineExchange",
+            "routingKey": "*"
+          }
+        ]
+      },
+      {
+        "name": "obsidian.testQueue",
+        "options": {
+          "durable": true,
+          "autoDelete": false
+        },
+        "subscribeOptions": {
+          "ack": true,
+          "prefetchCount": 4
+        },
+        "bindings": [
+          {
+            "exchange": "obsidian.testExchange",
+            "routingKey": "*"
+          }
+        ]
       }
     ]
   }
