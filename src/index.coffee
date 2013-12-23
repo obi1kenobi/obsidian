@@ -1,3 +1,6 @@
+optimist        = require('optimist')
+workerTypes = require('./lib/worker_types')
+
 ascii = """
                     .
            .  .  ~D888ND. .
@@ -48,3 +51,12 @@ ascii = """
 """
 
 console.log ascii
+
+argv = optimist.parse(process.argv)
+if !argv.type? or !workerTypes[argv.type]?
+  console.log 'Please specify a valid type of worker to spawn with the --type parameter.'
+  console.log 'See worker_types for the list of workers.'
+  console.log ''
+  console.log 'Example parameter: --type=fileQueuer'
+else
+  workerTypes[argv.type].run()

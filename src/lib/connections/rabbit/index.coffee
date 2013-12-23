@@ -41,6 +41,7 @@ Rabbit =
           Rabbit._createQueues callback
       ], cb
     connection.on 'error', (err) ->
+      logDebug 'Rabbit connection error:', err
 
   ###
   Publish the message to the given exchange name with the specified key.
