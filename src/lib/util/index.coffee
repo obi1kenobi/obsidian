@@ -35,4 +35,14 @@ Util =
             done(null, [].concat.apply([], res))
     ], cb
 
+  ###
+  Calls Object.freeze on all keys recursively, instead of just freezing the top-level object.
+  ###
+  deepFreeze: (obj) ->
+    for k, v of obj
+      if typeof v == 'object'
+        Util.deepFreeze v
+    Object.freeze obj
+
+
 module.exports = Util

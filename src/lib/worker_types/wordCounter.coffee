@@ -23,22 +23,46 @@ updateTokenHandler = (item, time, cb) ->
     else
       cb(null, res)
 
+scriptedSaveHandler = (sha, signature, source, text, time, cb) ->
+  redis.client.evalsha sha, 0, signature, source, text, (err, res) ->
+    if err?
+      logError 'Error updating tokens:', err
+      nextTime = Math.min(time * 2, 30000)
+      setTimeout scriptedSaveHandler, time, sha, signature, source, text, nextTime, cb
+    else
+      cb(null, res)
+
+saveTokens = (hash, source, tokens, cb) ->
+  async.series [
+    (done) ->
+      hash = '__hash__' + hash
+      redis.client.set hash, source, done
+    (done) ->
+      async.each tokens, (item, callback) ->
+        updateTokenHandler item, 500, callback
+      , done
+  ], cb
+
+saveTokensScripted = (hash, source, tokens, cb) ->
+  script_name = constants.REDIS_SCRIPTS.BATCH_INCREMENT
+  text = tokens.join '|'
+  sha = redis.scriptShas[script_name]
+  hash = '__hash__' + hash
+  scriptedSaveHandler sha, hash, source, text, 500, cb
+
 processMessage = (message, headers, deliveryInfo, messageId) ->
-  { text } = message
+  { text, hash, source } = message
   tokens = tokenizer.tokenize text
 
   # logDebug 'text:', text
   # logDebug 'tokens:', tokens
 
-  async.each tokens, (item, done) ->
-    updateTokenHandler item, 500, done
-  , (err, res) ->
+  saveTokensScripted hash, source, tokens, (err, res) ->
     if err?
       logError 'Error:', err
       rabbit.reject(messageId, true)
     else
       rabbit.acknowledge(messageId)
-
 
 WordCounter =
   run: () ->

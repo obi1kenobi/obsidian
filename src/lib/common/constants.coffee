@@ -1,4 +1,4 @@
-module.exports =
+Constants =
   EXCHANGES:
     LINE_EXCHANGE: 'obsidian.lineExchange'
     TEST_EXCHANGE: 'obsidian.testExchange'
@@ -14,3 +14,6 @@ module.exports =
   REDIS_SCRIPT_FILES:
     'batch_increment.lua': 'BATCH_INCREMENT'
     'set_alias.test.lua': 'SET_ALIAS_TEST'
+
+
+module.exports = Constants

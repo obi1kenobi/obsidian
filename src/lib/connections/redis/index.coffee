@@ -14,7 +14,10 @@ preloadScriptFromFile = (file, cb) ->
     (script, done) ->
       Redis.client.script 'load', script, done
     (sha, done) ->
-      Redis.scriptShas[constants.REDIS_SCRIPT_FILES[path.basename(file)]] = sha
+      file_name = path.basename(file)
+      script_name = constants.REDIS_SCRIPT_FILES[file_name]
+      logDebug "Loaded script #{script_name} from #{file_name}"
+      Redis.scriptShas[script_name] = sha
       done()
   ], cb
 
