@@ -53,7 +53,7 @@
         },
         "subscribeOptions": {
           "ack": true,
-          "prefetchCount": 4
+          "prefetchCount": 16
         },
         "bindings": [
           {

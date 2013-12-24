@@ -43,6 +43,7 @@ Rabbit =
             createQueues callback
         ], cb
       connection.on 'error', (err) ->
+        logDebug err.stack if err.stack?
         logDebug 'Rabbit connection error:', err
     else
       process.nextTick cb
