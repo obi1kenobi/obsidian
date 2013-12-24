@@ -1,39 +1,19 @@
-optimist        = require('optimist')
-fs              = require('fs')
-path            = require('path')
-async           = require('async')
-lazy            = require('lazy.js')
-crypto          = require('crypto')
-{ constants }   = require('../common')
-rabbit          = require('../connections/rabbit')
-logDebug        = require('../logging').logDebug('worker::fileQueuer')
-logError        = require('../logging').logError('worker::fileQueuer')
+optimist                    = require('optimist')
+fs                          = require('fs')
+path                        = require('path')
+async                       = require('async')
+lazy                        = require('lazy.js')
+crypto                      = require('crypto')
+{ constants }               = require('../common')
+rabbit                      = require('../connections/rabbit')
+logDebug                    = require('../logging').logDebug('worker::fileQueuer')
+logError                    = require('../logging').logError('worker::fileQueuer')
+{ recursivelyCollectFiles } = require('../util')
 
 extensions = ['.txt']
 
 supportedExtension = (pathname) ->
   return path.extname(pathname) in extensions
-
-recursivelyCollectFiles = (start_path, cb) ->
-  async.waterfall [
-    (done) ->
-      fs.readdir(start_path, done)
-    (files, done) ->
-      async.map files, (item, callback) ->
-        full_path = path.resolve(start_path, item)
-        if fs.lstatSync(full_path).isDirectory()
-          recursivelyCollectFiles full_path, callback
-        else
-          if supportedExtension(full_path)
-            callback(null, [full_path])
-          else
-            callback(null, [])
-      , (err, res) ->
-        if err?
-          done(err)
-        else
-          done(null, [].concat.apply([], res))
-  ], cb
 
 createHash = (text) ->
   return crypto.createHash('sha1').update(text, 'utf8').digest('base64')
@@ -92,7 +72,7 @@ FileQueuer =
       if err?
         logError 'Couldn\'t initialize rabbit:', err
       else
-        recursivelyCollectFiles argv.path, (err, files) ->
+        recursivelyCollectFiles argv.path, supportedExtension, (err, files) ->
           if err?
             logError 'Error collecting files:', err
           else
