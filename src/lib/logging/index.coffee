@@ -20,8 +20,10 @@ Logging =
     color = 'red'
     name += ': '
     name = name.bold[color]
-    return () ->
-      arguments[0] = name + arguments[0]
+    return (text) ->
+      arguments[0] = name + text
       console.error.apply(null, arguments)
+      for e in arguments
+        console.error(e.stack) if e.stack?
 
 module.exports = Logging

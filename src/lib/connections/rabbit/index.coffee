@@ -1,6 +1,7 @@
 amqp               = require('amqp')
 async              = require('async')
 logDebug           = require('../../logging').logDebug('connections::rabbit')
+logError           = require('../../logging').logError('connections::rabbit')
 { config }         = require('../../common')
 
 queues = {}
@@ -43,8 +44,7 @@ Rabbit =
             createQueues callback
         ], cb
       connection.on 'error', (err) ->
-        logDebug err.stack if err.stack?
-        logDebug 'Rabbit connection error:', err
+        logError 'Rabbit connection error:', err
     else
       process.nextTick cb
 

@@ -7,6 +7,7 @@ crypto          = require('crypto')
 { constants }   = require('../common')
 rabbit          = require('../connections/rabbit')
 logDebug        = require('../logging').logDebug('worker::fileQueuer')
+logError        = require('../logging').logError('worker::fileQueuer')
 
 extensions = ['.txt']
 
@@ -54,12 +55,12 @@ processLine = (file, line, hash, attempt) ->
 
   rabbit.publish constants.EXCHANGES.LINE_EXCHANGE, '*', message, (err, res) ->
     if err?
-      logDebug 'Error when publishing hash', hash, err
+      logError 'Error when publishing hash', hash, err
       attempt++
       if attempt < 5
         process.nextTick processLine(file, line, hash, attempt)
       else
-        logDebug 'Max retries reached; giving up on hash', hash
+        logError 'Max retries reached; giving up on hash', hash
 
 processFile = (file, cb) ->
   eachFn = (line) ->
@@ -89,16 +90,17 @@ FileQueuer =
 
     rabbit.initialize (err, res) ->
       if err?
-        logDebug 'Couldn\'t initialize rabbit:', err
+        logError 'Couldn\'t initialize rabbit:', err
       else
         recursivelyCollectFiles argv.path, (err, files) ->
           if err?
-            logDebug 'Error collecting files:', err
+            logError 'Error collecting files:', err
           else
             logDebug 'Found files:', files
             async.each files, processFile, (err, res) ->
               if err?
-                logDebug 'Done with errors:', err
+                logDebug 'Done with errors!'
+                logError 'Errors:', err
               else
                 logDebug 'Done!'
               process.exit(0)
