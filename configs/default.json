@@ -80,5 +80,14 @@
         ]
       }
     ]
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "options": {
+      "parser": "hiredis",
+      "socket_nodelay": false,
+      "retry_max_delay": 15000
+    }
   }
 }

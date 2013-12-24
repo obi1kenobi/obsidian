@@ -31,17 +31,20 @@ Rabbit =
   Sets up the exchanges and queues as specified.
   ###
   initialize: (cb) ->
-    args = config.rabbit.connection
-    connection = amqp.createConnection args.options, args.implOptions
-    connection.once 'ready', () ->
-      async.series [
-        (callback) ->
-          Rabbit._createExchanges callback
-        (callback) ->
-          Rabbit._createQueues callback
-      ], cb
-    connection.on 'error', (err) ->
-      logDebug 'Rabbit connection error:', err
+    if !connection?
+      args = config.rabbit.connection
+      connection = amqp.createConnection args.options, args.implOptions
+      connection.once 'ready', () ->
+        async.series [
+          (callback) ->
+            Rabbit._createExchanges callback
+          (callback) ->
+            Rabbit._createQueues callback
+        ], cb
+      connection.on 'error', (err) ->
+        logDebug 'Rabbit connection error:', err
+    else
+      process.nextTick cb
 
   ###
   Publish the message to the given exchange name with the specified key.
