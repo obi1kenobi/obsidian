@@ -46,3 +46,5 @@ nvm install 0.10 && nvm alias default 0.10
 
 # install coffee-script globally
 npm install -g coffee-script
+
+echo "Setup done. Please close and reopen your terminal session to apply the changes to your bashrc file."
