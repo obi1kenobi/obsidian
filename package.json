@@ -11,8 +11,8 @@
     }
   ],
   "scripts": {
-    "start": "chmod +x ./scripts/start && ./scripts/start",
-    "test": "chmod +x ./scripts/test && ./scripts/test"
+    "start": "chmod +x ./scripts/start.sh && ./scripts/start.sh",
+    "test": "chmod +x ./scripts/test.sh && ./scripts/test.sh"
   },
   "repository": {
     "type": "git",

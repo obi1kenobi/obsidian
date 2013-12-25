@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # sanity check
-if [ "$0" != "./scripts/test" ]; then
+if [ "$0" != "./scripts/start.sh" ]; then
   echo "Start failed: Wrong cwd"
   echo "Executed from wrong cwd, you need to be in the obsidian root to call this script"
   exit 1
@@ -15,13 +15,6 @@ if [ "$?" -ne "0" ]; then
   exit 1
 fi
 
-pushd ./bin
-
-mocha --bail --recursive --reporter spec --ui bdd --timeout 2000 --slow 100
-
-# if mocha failed, quit with exit code 1
-if [ "$?" -ne "0" ]; then
-  exit 1
-fi
-
-popd
+echo "Starting..."
+echo ""
+node ./bin/index.js
