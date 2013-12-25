@@ -13,8 +13,8 @@ if [ ! -f ./dotdeb.org.list ]; then
   touch ./dotdeb.org.list
   echo "deb http://packages.dotdeb.org wheezy all" >> ./dotdeb.org.list
   echo "deb-src http://packages.dotdeb.org wheezy all" >> ./dotdeb.org.list
-  wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 fi
+wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 popd
 
 # add rabbit package to apt
@@ -23,8 +23,8 @@ pushd /etc/apt/sources.list.d/
 if [ ! -f ./rabbitmq.com.list ]; then
   touch ./rabbitmq.com.list
   echo "deb http://www.rabbitmq.com/debian/ testing main" >> ./rabbitmq.com.list
-  wget -q -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
 fi
+wget -q -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
 popd
 
 # update apt and install packages
