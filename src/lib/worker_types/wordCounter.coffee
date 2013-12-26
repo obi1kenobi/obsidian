@@ -7,7 +7,7 @@ redis              = require('../connections/redis')
 logDebug           = require('../logging').logDebug('worker::wordCounter')
 logError           = require('../logging').logError('worker::wordCounter')
 
-tokenizer = new natural.RegexpTokenizer({ pattern: /[^\w\-\']/ })
+tokenizer = new natural.RegexpTokenizer({ pattern: /[^a-zA-Z\-\']/ })
 
 updateTokenHandler = (item, time, cb) ->
   async.series [
