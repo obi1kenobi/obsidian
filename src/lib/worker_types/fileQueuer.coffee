@@ -77,7 +77,7 @@ FileQueuer =
             logError 'Error collecting files:', err
           else
             logDebug 'Found files:', files
-            async.eachLimit files, 8, processFile, (err, res) ->
+            async.eachLimit files, 3, processFile, (err, res) ->
               if err?
                 logDebug 'Done with errors!'
                 logError 'Errors:', err
