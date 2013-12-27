@@ -3,3 +3,4 @@ module.exports =
   wordCounter: require('./wordCounter')
   markovWords: require('./markovWords')
   markovNormalizer: require('./markovNormalizer')
+  markovDemo: require('./markovDemo')

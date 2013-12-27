@@ -1,7 +1,6 @@
 optimist           = require('optimist')
 async              = require('async')
 fs                 = require('fs')
-redis              = require('../connections/redis')
 { constants }      = require('../common')
 logDebug           = require('../logging').logDebug('worker::markovNormalizer')
 logError           = require('../logging').logError('worker::markovNormalizer')
@@ -13,7 +12,7 @@ fractionNormalize = (number, total) ->
 
 neglogNormalize = (number, total) ->
   if number == 0
-    return 1e99  # instead of infinity
+    return Number.POSITIVE_INFINITY
   return Math.log(total) - Math.log(number)
 
 normalizeLevel = (counts, level, normalizationFn) ->
@@ -51,7 +50,7 @@ MarkovNormalizer =
         throw "Can't analyze ngrams shorter than 2"
       return true
 
-    argv = optimist.usage('Construct a n-gram Markov model of word structure given word data in Redis.')
+    argv = optimist.usage('Normalize Markov chain counts into neglog or fractional counts.')
                    .demand(['output', 'input'])
                    .default('ngram', 4)
                    .default('mode', 'neglog')
