@@ -3,8 +3,8 @@ async              = require('async')
 fs                 = require('fs')
 redis              = require('../connections/redis')
 { constants }      = require('../common')
-logDebug           = require('../logging').logDebug('worker::wordCounter')
-logError           = require('../logging').logError('worker::wordCounter')
+logDebug           = require('../logging').logDebug('worker::markovNormalizer')
+logError           = require('../logging').logError('worker::markovNormalizer')
 
 fractionNormalize = (number, total) ->
   if total == 0
