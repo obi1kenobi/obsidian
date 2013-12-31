@@ -34,7 +34,7 @@ preloadScripts = (cb) ->
       async.each files, preloadScriptFromFile, done
   ], cb
 
-scanRedisKeys = (cursor, iterator, cb) ->
+scanRedisKeys = (cursor, count, iterator, progress, cb) ->
   new_cursor = null
   async.waterfall [
     (done) ->
@@ -42,6 +42,7 @@ scanRedisKeys = (cursor, iterator, cb) ->
     (response, done) ->
       new_cursor = response[0]
       keys = response[1]
+      count += keys.length
       async.each keys, iterator, done
   ], (err, res) ->
     if err?
@@ -51,8 +52,9 @@ scanRedisKeys = (cursor, iterator, cb) ->
         # done iterating
         cb(err, res)
       else
+        progress?(count)
         process.nextTick () ->
-          scanRedisKeys new_cursor, iterator, cb
+          scanRedisKeys new_cursor, count, iterator, progress, cb
 
 Redis =
   client: null
@@ -60,10 +62,16 @@ Redis =
   ###
   Iterates over all keys in the selected Redis database (default 0).
 
+  Progress is an optional function that is called periodically with the number of keys
+  iterated over so far as a parameter.
+
   Calls iterator with each key in turn, calls the callback when done.
   ###
-  each: (iterator, cb) ->
-    scanRedisKeys 0, iterator, cb
+  each: (iterator, progress, cb) ->
+    if !cb?
+      cb = progress
+      progress = null
+    scanRedisKeys 0, 0, iterator, progress, cb
 
   ###
   Contains the SHA1 signatures of all scripts in the redis_scripts folder.

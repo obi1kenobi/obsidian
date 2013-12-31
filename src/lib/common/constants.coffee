@@ -15,5 +15,10 @@ Constants =
     'batch_increment.lua': 'BATCH_INCREMENT'
     'set_alias.test.lua': 'SET_ALIAS_TEST'
 
+  LETTERS: [ '^', '$',  # start and end of word tags
+             '-', "'", 'a', 'b', 'c', 'd', 'e',
+             'f', 'g', 'h', 'i', 'j', 'k', 'l',
+             'm', 'n', 'o', 'p', 'q', 'r', 's',
+             't', 'u', 'v', 'w', 'x', 'y', 'z' ]
 
 module.exports = Constants

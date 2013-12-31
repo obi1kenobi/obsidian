@@ -4,3 +4,4 @@ module.exports =
   markovWords: require('./markovWords')
   markovNormalizer: require('./markovNormalizer')
   markovDemo: require('./markovDemo')
+  dataExtractor: require('./dataExtractor')
