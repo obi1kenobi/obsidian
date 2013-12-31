@@ -1,4 +1,5 @@
 should                  = require('chai').should()
+async                   = require('async')
 redis                   = require('../../lib/connections/redis')
 { constants }           = require('../../lib/common')
 logDebug                = require('../../lib/logging').logDebug('redis::test')
@@ -12,16 +13,12 @@ describe 'Redis connection', () ->
         redis.client.select 13, done
       (done) ->
         redis.client.flushdb done
-      (done) ->
-        redis.client.script 'flush', done
     ], cb
 
   after (cb) ->
     async.series [
       (done) ->
         redis.client.flushdb done
-      (done) ->
-        redis.client.script 'flush', done
     ], cb
 
   it 'should connect and process commands', (done) ->
@@ -40,6 +37,7 @@ describe 'Redis connection', () ->
     key = "test-key-2"
     value = "test-value-2"
 
+    # this script should have been loaded on initialize
     sha = redis.scriptShas[constants.REDIS_SCRIPTS.SET_ALIAS_TEST]
     redis.client.evalsha sha, 1, key, value, (err, res) ->
       should.not.exist err
@@ -52,9 +50,9 @@ describe 'Redis connection', () ->
   it 'should iterate over all keys in current database', (done) ->
     keys = []
     values = []
-    for i in [0...10]
-      keys.append 'test-key-' + item.toString()
-      value.append 'test-value-' + item.toString()
+    for item in [0...10]
+      keys.push 'test-key-' + item.toString()
+      values.push 'test-value-' + item.toString()
 
     async.each [0...10], (i, done) ->
       redis.client.set keys[i], values[i], done
