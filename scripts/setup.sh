@@ -36,6 +36,9 @@ rabbitmq-plugins enable rabbitmq_management
 service rabbitmq-server restart
 
 if [ ! -d ~/.nvm ]; then
+  # monkey-patch .profile so nvm doesn't cause infinite login loop when it's sourced
+  echo -e "\nreturn" >> ~/.profile
+
   # install nvm (node version manager)
   wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh
   source ~/.nvm/nvm.sh && echo -e "\n. ~/.nvm/nvm.sh" >> ~/.bashrc
