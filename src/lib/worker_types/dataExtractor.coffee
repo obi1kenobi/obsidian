@@ -10,10 +10,13 @@ argv = null
 data = {}
 
 processKey = (key, cb) ->
-  redis.client.get key, (err, res) ->
-    if parseInt(res) >= argv.minlimit
-      data[key] = res
-    cb(err, res)
+  if key.length > argv.maxlen
+    process.nextTick cb
+  else
+    redis.client.get key, (err, res) ->
+      if parseInt(res) >= argv.minfreq
+        data[key] = res
+      cb(err, res)
 
 reportProgress = (count) ->
   logDebug "#{count} keys processed."
@@ -26,7 +29,8 @@ DataExtractor =
   run: () ->
     argv = optimist.usage('Extract all keys and values from database 0 of Redis and save them as a JSON file.\nParams: --output [file]')
                    .demand(['output'])
-                   .default('minlimit', 0)
+                   .default('minfreq', 0)
+                   .default('maxlen', 1 << 20)
                    .argv
 
     logDebug 'Worker starting...'
