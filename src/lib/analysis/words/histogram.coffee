@@ -24,7 +24,7 @@ Histogram =
   difference: (hista, histb) ->
     diff = 0
     for i in [0...8]
-      diff += Math.abs(hista & 15, histb & 15)
+      diff += Math.abs((hista & 15) - (histb & 15))
       hista >>= 4
       histb >>= 4
     return diff

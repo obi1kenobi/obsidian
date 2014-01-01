@@ -26,3 +26,15 @@ describe 'Word histograms', () ->
   it 'should throw errors on words longer than 15 characters', () ->
     fn = () -> histogram.create('abcdefghijklmnop')
     should.Throw fn, Error
+
+  it 'should subtract histograms correctly', () ->
+    make = (hista, histb, answer) ->
+      return {hista, histb, answer}
+
+    test_data = [ make 0x1, 0x2, 1
+                  make 0x10, 0x1, 2
+                  make 0x401, 0x104, 6
+                ]
+
+    for item in test_data
+      histogram.difference(item.hista, item.histb).should.equal item.answer
