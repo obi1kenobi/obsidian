@@ -13,13 +13,25 @@ Histogram =
   create: (word) ->
     hist = 0
     if word.length <= 15
+      # fast path, no overflows possible
       for l in word
         if !letter_map[l]?
           throw new Error('Word has unsupported letters. Word: ' + word)
         hist += 1 << letter_map[l]
       return hist
     else
-      throw new Error('Word too long, length should be 15 or less. Word: ' + word)
+      # slow path, guard against overflows
+      counts = [0, 0, 0, 0, 0, 0, 0, 0]
+      for l in word
+        if !letter_map[l]?
+          throw new Error('Word has unsupported letters. Word: ' + word)
+        counts[letter_map[l] >> 2]++
+
+      for i in [0...8]
+        counts[i] = Math.min(15, counts[i])
+        hist += counts[i] * (1 << (i << 2))
+
+      return hist
 
   difference: (hista, histb) ->
     diff = 0

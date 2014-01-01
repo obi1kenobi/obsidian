@@ -23,9 +23,8 @@ describe 'Word histograms', () ->
     for item in test_data
       histogram.create(item.string).should.equal item.value
 
-  it 'should throw errors on words longer than 15 characters', () ->
-    fn = () -> histogram.create('abcdefghijklmnop')
-    should.Throw fn, Error
+  it 'should compute histograms with words longer than 15 characters', () ->
+    histogram.create('abcdefghijklmnop').should.equal 0x22222222
 
   it 'should subtract histograms correctly', () ->
     make = (hista, histb, answer) ->
