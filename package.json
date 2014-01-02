@@ -22,6 +22,7 @@
     "amqp"        :   "0.1.8",
     "async"       :   "0.2.9",
     "colors"      :   "*",
+    "heap"        :   "0.2.3",
     "lazy.js"     :   "0.3.0",
     "natural"     :   "0.1.25",
     "optimist"    :   "0.6.0",
