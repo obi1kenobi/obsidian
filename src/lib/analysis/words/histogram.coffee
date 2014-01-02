@@ -25,12 +25,9 @@ Histogram =
       for l in word
         if !letter_map[l]?
           throw new Error('Word has unsupported letters. Word: ' + word)
-        counts[letter_map[l] >> 2]++
-
-      for i in [0...8]
-        counts[i] = Math.min(15, counts[i])
-        hist += counts[i] * (1 << (i << 2))
-
+        else if counts[letter_map[l] >> 2] < 15
+          counts[letter_map[l] >> 2]++
+          hist += 1 << letter_map[l]
       return hist
 
   difference: (hista, histb) ->
