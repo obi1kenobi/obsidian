@@ -50,3 +50,17 @@ describe 'Algorithm', () ->
         array[i].should.be.below 6
       for i in [5...array.length]
         array[i].should.be.above 4
+
+    it 'should find the nth element in a fragment of the array', () ->
+      array = _.shuffle [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+      array.push -1
+      array.unshift -1
+      algorithm.nthElement array, 1, array.length - 1, 5, algorithm.numberComparator
+      array[6].should.equal 5
+      for i in [1...6]
+        array[i].should.be.below 6
+      for i in [6...array.length-1]
+        array[i].should.be.above 4
+      array[0].should.equal -1
+      array[array.length-1].should.equal -1
