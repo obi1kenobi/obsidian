@@ -26,7 +26,6 @@ class VPTree
     @_closestOneResult = null
 
   _closestRecurse: (value, node_index) ->
-    #logDebug "Evaluating node index #{node_index}"
     node = @data[node_index]
     dist = @metric value, node.value
     if dist < @_tau

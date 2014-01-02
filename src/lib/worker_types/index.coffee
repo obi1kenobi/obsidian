@@ -5,3 +5,4 @@ module.exports =
   markovNormalizer: require('./markovNormalizer')
   markovDemo: require('./markovDemo')
   dataExtractor: require('./dataExtractor')
+  vpHistogramDemo: require('./vpHistogramDemo')

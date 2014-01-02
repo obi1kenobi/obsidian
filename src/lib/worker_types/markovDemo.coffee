@@ -50,6 +50,7 @@ processLine = (line) ->
   line = line.toLowerCase().trim()
   if !validateInput(line)
     console.log "Not a valid word: #{line}\n"
+    rl.prompt()
     return
   results = calculateCoefficient(line)
   console.log "Word probability coeff: #{results.absolute.toFixed(3)}; Length-normalized: #{results.normalized.toFixed(3)}\n"
