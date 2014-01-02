@@ -6,22 +6,11 @@ logDebug      = require('../../lib/logging').logDebug('test::VPTree')
 
 describe 'VPTree', () ->
   metric = (a, b) ->
-    return Math.abs(a.key-b.key)
+    return Math.abs(a-b)
 
-  make = (key, value) ->
-    return {key, value}
+  data = _.shuffle [0, 1, 2, 3, 4, 5, 6]
 
   it 'should be connected and have valid radii', () ->
-    data = _.shuffle [
-      make 0, 0
-      make 1, 1
-      make 2, 2
-      make 3, 3
-      make 4, 4
-      make 5, 5
-      make 6, 6
-    ]
-
     vpt = new VPTree data, metric
     connected = [vpt.root]
     _.each vpt.data, (element) ->
@@ -46,3 +35,17 @@ describe 'VPTree', () ->
           metric(elem, node).should.not.be.below node.r
 
     validateRadii vpt.root
+
+  it 'should find the closest element', () ->
+    vpt = new VPTree data, metric
+    result = vpt.closestOne 2.1
+    should.exist result
+    result.should.eql 2
+
+    result = vpt.closestOne -0.1
+    should.exist result
+    result.should.eql 0
+
+    result = vpt.closestOne 6.1
+    should.exist result
+    result.should.eql 6
