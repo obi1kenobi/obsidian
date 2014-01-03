@@ -41,14 +41,18 @@ getClosestWithVpt = (word, hist) ->
 getClosestWithLinearScan = (word, hist) ->
   bestdiff = Number.POSITIVE_INFINITY
   bestword = null
+  count = 0
   start = Date.now()
   for d in data
     diff = histogram.difference d.hist, hist
     if diff < bestdiff
+      count = 1
       bestdiff = diff
       bestword = d.word
+    else if diff == bestdiff
+      count++
   end = Date.now()
-  console.log "Linear: Closest word at distance #{bestdiff}: #{bestword} (#{end-start}ms)\n"
+  console.log "Linear: Closest word (1 of #{count}) at distance #{bestdiff}: #{bestword} (#{end-start}ms)\n"
 
 processLine = (line) ->
   line = line.toLowerCase().trim()
