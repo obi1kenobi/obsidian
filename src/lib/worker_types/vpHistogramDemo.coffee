@@ -30,6 +30,26 @@ validateInput = (line) ->
         return false
   return valid
 
+getClosestWithVpt = (word, hist) ->
+  item = {hist, word}
+  start = Date.now()
+  result = vpt.closestOne item
+  end = Date.now()
+  diff = histogram.difference result.hist, hist
+  console.log "VPT: Closest word at distance #{diff}: #{result.word} (#{end-start}ms)\n"
+
+getClosestWithLinearScan = (word, hist) ->
+  bestdiff = Number.POSITIVE_INFINITY
+  bestword = null
+  start = Date.now()
+  for d in data
+    diff = histogram.difference d.hist, hist
+    if diff < bestdiff
+      bestdiff = diff
+      bestword = d.word
+  end = Date.now()
+  console.log "Linear: Closest word at distance #{bestdiff}: #{bestword} (#{end-start}ms)\n"
+
 processLine = (line) ->
   line = line.toLowerCase().trim()
   if !validateInput(line)
@@ -37,10 +57,8 @@ processLine = (line) ->
     rl.prompt()
     return
   hist = histogram.create line
-  item = {hist, word: line}
-  result = vpt.closestOne item
-  diff = histogram.difference result.hist, hist
-  console.log "Closest word at distance #{diff}: #{result.word}\n"
+  getClosestWithVpt line, hist
+  getClosestWithLinearScan line, hist
   rl.prompt()
 
 VPHistogramDemo =
