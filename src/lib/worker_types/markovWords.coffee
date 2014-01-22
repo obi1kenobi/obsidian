@@ -95,10 +95,10 @@ MarkovWords =
   run: () ->
     check_fn = (argv) ->
       if argv.ngram < 2
-        throw "Can't analyze ngrams shorter than 2"
+        throw new Error("Can't analyze ngrams shorter than 2")
       return true
-
-    argv = optimist.usage('Construct a n-gram Markov model of word structure given word data in Redis.')
+    USAGE = 'Construct a n-gram Markov model of word structure given word data in Redis.'
+    argv = optimist.usage(USAGE)
                    .demand(['output'])
                    .default('ngram', 4)
                    .describe('output', 'Output file name')

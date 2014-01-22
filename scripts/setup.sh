@@ -1,4 +1,7 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+# stop immediately if any process returns non-zero exit code
+set -e
 
 # Make sure only root can run our script
 if [[ $EUID -ne 0 ]]; then
@@ -49,6 +52,7 @@ nvm install 0.10 && nvm alias default 0.10
 
 # install coffee-script globally
 npm install -g coffee-script
+npm install -g coffeelint
 
 # install the other dependencies of the code locally
 npm install

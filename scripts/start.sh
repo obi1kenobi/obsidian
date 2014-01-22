@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# stop immediately if any process returns non-zero exit code
+set -e
 
 # sanity check
 if [ "$0" != "./scripts/start.sh" ]; then
@@ -9,11 +12,6 @@ fi
 
 # run build script
 chmod +x ./scripts/build && ./scripts/build
-
-# if build not successful, quit
-if [ "$?" -ne "0" ]; then
-  exit 1
-fi
 
 echo "Starting..."
 echo ""

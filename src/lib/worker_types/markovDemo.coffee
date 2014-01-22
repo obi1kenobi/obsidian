@@ -53,7 +53,9 @@ processLine = (line) ->
     rl.prompt()
     return
   results = calculateCoefficient(line)
-  console.log "Word probability coeff: #{results.absolute.toFixed(3)}; Length-normalized: #{results.normalized.toFixed(3)}\n"
+  output = "Word probability coeff: #{results.absolute.toFixed(3)};
+ Length-normalized: #{results.normalized.toFixed(3)}\n"
+  console.log output
   rl.prompt()
 
 MarkovDemo =
@@ -71,7 +73,8 @@ MarkovDemo =
     rl.setPrompt('Demo > ')
     params = JSON.parse fs.readFileSync argv.input, { encoding: 'utf8' }
     console.log 'Type in a word to run it through the Markov model.'
-    console.log 'Keep in mind that likely words will have small coefficients with neglog data, and high coefficients with fractional data.\n'
+    console.log 'Keep in mind that likely words will have small coefficients with neglog data,
+ and high coefficients with fractional data.\n'
 
     rl.prompt()
     rl.on 'line', processLine

@@ -27,7 +27,9 @@ saveOutput = (output, cb) ->
 
 DataExtractor =
   run: () ->
-    argv = optimist.usage('Extract all keys and values from database 0 of Redis and save them as a JSON file.\nParams: --output [file]')
+    USAGE = "Extract all keys and values from database 0 of Redis and save them as a JSON file.\n
+Params: --output [file]"
+    argv = optimist.usage(USAGE)
                    .demand(['output'])
                    .default('minfreq', 0)
                    .default('maxlen', 1 << 20)

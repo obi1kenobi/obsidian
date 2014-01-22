@@ -73,7 +73,9 @@ class VPTree
 
     median_position = (hi - (lo + 1)) >> 1
     comparator = (a, b) =>
-      return algorithm.numberComparator @metric(a.value, @data[local_root_index].value), @metric(b.value, @data[local_root_index].value)
+      numA = @metric(a.value, @data[local_root_index].value)
+      numB = @metric(b.value, @data[local_root_index].value)
+      return algorithm.numberComparator numA, numB
 
     # partition around median element
     algorithm.nthElement @data, lo + 1, hi, median_position, comparator

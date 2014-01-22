@@ -46,7 +46,7 @@ processFile = (file, cb) ->
   eachFn = (line) ->
     processLine(file, line, createHash(line), 0)
 
-  stream = fs.createReadStream(file);
+  stream = fs.createReadStream(file)
   stream.on 'end', () ->
     logDebug 'Finished processing file', file
     cb()
@@ -62,7 +62,9 @@ processFile = (file, cb) ->
 
 FileQueuer =
   run: () ->
-    argv = optimist.usage('Recursively queue up the lines from all files in the given directory\nParams: --path [dir]')
+    USAGE = 'Recursively queue up the lines from all files in the given directory\n
+Params: --path [dir]'
+    argv = optimist.usage(USAGE)
                    .demand(['path'])
                    .argv
 

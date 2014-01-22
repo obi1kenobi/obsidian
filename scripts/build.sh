@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# stop immediately if any process returns non-zero exit code
+set -e
 
 # sanity check:
 # this script deletes files left and right
@@ -12,16 +15,11 @@ fi
 echo "Removing existing build..."
 rm -rf ./bin && mkdir ./bin
 
-if [ "$?" -ne "0" ]; then
-  exit 1
-fi
-
 # compile with source maps
 echo "Compiling Coffeescript to JS..."
 coffee --map --output ./bin/ --compile ./src/
 
-if [ "$?" -ne "0" ]; then
-  exit 1
-fi
+echo "Linting..."
+find ./src -name "*.coffee" -print0 | xargs -0 ./node_modules/.bin/coffeelint -f ./coffeelint.json
 
 echo "Build successful!"

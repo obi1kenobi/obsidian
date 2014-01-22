@@ -35,7 +35,7 @@ normalize = (args, cb) ->
   else if args.mode == 'fraction'
     normalizationFn = fractionNormalize
   else
-    throw 'Unrecognized normalization mode ' + args.mode
+    throw new Error('Unrecognized normalization mode ' + args.mode)
 
   counts = JSON.parse fs.readFileSync args.input, { encoding: 'utf8' }
   result = normalizeLevel counts, args.ngram, normalizationFn
@@ -47,7 +47,7 @@ MarkovNormalizer =
   run: () ->
     check_fn = (argv) ->
       if argv.ngram < 2
-        throw "Can't analyze ngrams shorter than 2"
+        throw new Error("Can't analyze ngrams shorter than 2")
       return true
 
     argv = optimist.usage('Normalize Markov chain counts into neglog or fractional counts.')

@@ -20,7 +20,7 @@ initializeData = (words) ->
   for k, v of words
     data.push {hist: histogram.create(k.toLowerCase()), word: k}
   logDebug 'Creating VP tree...'
-  vpt = new VPTree data, metric
+  vpt = new VPTree(data, metric)
 
 validateInput = (line) ->
   valid = line?.length > 0 and line.split(' ').length == 1
@@ -52,7 +52,8 @@ getClosestWithLinearScan = (word, hist) ->
     else if diff == bestdiff
       count++
   end = Date.now()
-  console.log "Linear: Closest word (1 of #{count}) at distance #{bestdiff}: #{bestword} (#{end-start}ms)\n"
+  console.log "Linear: Closest word (1 of #{count}) at distance #{bestdiff}:
+ #{bestword} (#{end-start}ms)\n"
 
 processLine = (line) ->
   line = line.toLowerCase().trim()
@@ -67,7 +68,8 @@ processLine = (line) ->
 
 VPHistogramDemo =
   run: () ->
-    argv = optimist.usage('Demo the VP tree + histogram functionality for spell checking.\nParams: --input [file]')
+    USAGE = 'Demo the VP tree + histogram functionality for spell checking.\nParams: --input [file]'
+    argv = optimist.usage(USAGE)
                    .demand(['input'])
                    .argv
 

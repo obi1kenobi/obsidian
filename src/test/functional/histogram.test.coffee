@@ -7,7 +7,8 @@ describe 'Word histograms', () ->
     make = (string, value) ->
       return {string, value}
 
-    test_data = [ make 'a', 1
+    test_data = [
+                  make 'a', 1
                   make 'b', 1 << 4
                   make 'c', 1 << 8
                   make 'd', 1 << 12
@@ -30,7 +31,8 @@ describe 'Word histograms', () ->
     make = (hista, histb, answer) ->
       return {hista, histb, answer}
 
-    test_data = [ make 0x1, 0x2, 1
+    test_data = [
+                  make 0x1, 0x2, 1
                   make 0x10, 0x1, 2
                   make 0x401, 0x104, 6
                 ]

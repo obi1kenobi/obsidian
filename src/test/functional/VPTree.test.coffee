@@ -11,7 +11,7 @@ describe 'VPTree', () ->
   data = _.shuffle [0, 1, 2, 3, 4, 5, 6]
 
   it 'should be connected and have valid radii', () ->
-    vpt = new VPTree data, metric
+    vpt = new VPTree(data, metric)
     connected = [vpt.root]
     _.each vpt.data, (element) ->
       connected.push element.left if element?.left?
@@ -37,7 +37,7 @@ describe 'VPTree', () ->
     validateRadii vpt.root
 
   it 'should find the closest element', () ->
-    vpt = new VPTree data, metric
+    vpt = new VPTree(data, metric)
     result = vpt.closestOne 2.1
     should.exist result
     result.should.eql 2

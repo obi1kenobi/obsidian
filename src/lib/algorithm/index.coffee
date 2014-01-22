@@ -42,7 +42,7 @@ Algorithm =
   ###
   partition: (array, lo, hi, pivot, comparator) ->
     if pivot < lo or pivot >= hi
-      throw new Error "Illegal pivot index, not in [#{lo},#{hi}): #{pivot}"
+      throw new Error("Illegal pivot index, not in [#{lo},#{hi}): #{pivot}")
 
     pivot_val = array[pivot]
     if lo != pivot
@@ -71,7 +71,7 @@ Algorithm =
   ###
   nthElement: (array, lo, hi, n, comparator) ->
     if n < 0 or n >= hi-lo
-      throw new Error "Illegal n value, not in [0, #{hi-lo}): #{n}"
+      throw new Error("Illegal n value, not in [0, #{hi-lo}): #{n}")
 
     if lo == hi
       return

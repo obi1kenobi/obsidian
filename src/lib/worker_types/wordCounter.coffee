@@ -66,7 +66,8 @@ processMessage = (message, headers, deliveryInfo, messageId) ->
 
 WordCounter =
   run: () ->
-    argv = optimist.usage('Count the number of occurrences of each word in all text queued up on Rabbit.')
+    USAGE = 'Count the number of occurrences of each word in all text queued up on Rabbit.'
+    argv = optimist.usage(USAGE)
                    .argv
 
     logDebug 'Worker starting...'
