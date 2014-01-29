@@ -29,7 +29,7 @@ Sends a RabbitMQ message to the line exchange for every line. Message format:
 ###
 processLine = (file, line, hash, attempt) ->
   message =
-    text: line
+    text: line.toLowerCase()
     source: file
     hash: hash
 
