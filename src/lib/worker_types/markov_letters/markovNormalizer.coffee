@@ -1,9 +1,9 @@
 optimist           = require('optimist')
 async              = require('async')
 fs                 = require('fs')
-{ constants }      = require('../common')
-logDebug           = require('../logging').logDebug('worker::markovNormalizer')
-logError           = require('../logging').logError('worker::markovNormalizer')
+{ constants }      = require('../../common')
+logDebug           = require('../../logging').logDebug('worker::markovNormalizer')
+logError           = require('../../logging').logError('worker::markovNormalizer')
 
 fractionNormalize = (number, total) ->
   if total == 0

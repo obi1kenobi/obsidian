@@ -1,0 +1,24 @@
+Parsing text into sequences:
+  1. split on separator chars:
+    `!,.:;"?/\|[]{}()*&<>
+
+  2. throw out any words that have the following chars, and split the sequence around those words:
+    @#$%^0123456789
+    (probably split with regex: ^|whitespace -- non-whitespace* -- bad char -- non-whitespace* -- whitespace|$)
+
+  3. throw out any words that have chars that are not [a-zA-Z\-], and split around those words.
+    Log words thrown out here, just in case we are getting rid of good data.
+
+  After this, we have sequences we want to build n-grams out of.
+
+  4. split on whitespace to construct n-grams
+
+System organization:
+
+  Chunkers ------> Parsers ------> Writers
+
+  Chunkers take inputs (Wikipedia, Gutenberg) and do any necessary preprocessing, and split the data up into reasonably sized chunks. For Gutenberg, this would e.g. remove hard line wrapping, remove license info, etc.
+
+  Parsers apply the text parsing rules defined above to the chunks, and generate a list of sequences. They package this list of sequences together with a hash of the chunk to generate a sequence record.
+
+  The writers grab sequence records and save them in append-only fashion to the local file system on a central server. The records are saved to a file that is named according to a prefix of the hash of the record.

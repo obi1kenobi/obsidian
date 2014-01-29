@@ -2,10 +2,12 @@ Constants =
   EXCHANGES:
     LINE_EXCHANGE: 'obsidian.lineExchange'
     TEST_EXCHANGE: 'obsidian.testExchange'
+    CHUNK_EXCHANGE: 'obsidian.chunkExchange'
 
   QUEUES:
     LINE_QUEUE: 'obsidian.lineQueue'
     TEST_QUEUE: 'obsidian.testQueue'
+    CHUNK_QUEUE: 'obsidian.chunkQueue'
 
   REDIS_SCRIPTS:
     BATCH_INCREMENT: 'BATCH_INCREMENT'

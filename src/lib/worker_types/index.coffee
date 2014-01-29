@@ -6,3 +6,4 @@ module.exports =
   markovDemo: require('./demo/markovDemo')
   dataExtractor: require('./tools/dataExtractor')
   vpHistogramDemo: require('./demo/vpHistogramDemo')
+  wikiChunker: require('./markov_words/chunkers/wikiChunker')

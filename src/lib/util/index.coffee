@@ -1,6 +1,7 @@
 fs        = require('fs')
 path      = require('path')
 async     = require('async')
+crypto    = require('crypto')
 
 Util =
   promiseToCallback: (promise, cb) ->
@@ -17,7 +18,7 @@ Util =
   recursivelyCollectFiles: (start_path, predicate, cb) ->
     async.waterfall [
       (done) ->
-        fs.readdir(start_path, done)
+        fs.readdir start_path, done
       (files, done) ->
         async.map files, (item, callback) ->
           full_path = path.resolve(start_path, item)
@@ -44,5 +45,10 @@ Util =
         Util.deepFreeze v
     Object.freeze obj
 
+  ###
+  Hashes the given text with the specified algorithm and returns the base64 hash.
+  ###
+  hashText: (algorithm, text) ->
+    return crypto.createHash(algorithm).update(text, 'utf8').digest('base64')
 
 module.exports = Util

@@ -1,10 +1,10 @@
 optimist           = require('optimist')
 async              = require('async')
 fs                 = require('fs')
-redis              = require('../connections/redis')
-{ constants }      = require('../common')
-logDebug           = require('../logging').logDebug('worker::markovWords')
-logError           = require('../logging').logError('worker::markovWords')
+redis              = require('../../connections/redis')
+{ constants }      = require('../../common')
+logDebug           = require('../../logging').logDebug('worker::markovWords')
+logError           = require('../../logging').logError('worker::markovWords')
 
 letters = [ '^', '$',  # start and end of word tags
             '-', "'", 'a', 'b', 'c', 'd', 'e',

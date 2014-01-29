@@ -1,10 +1,10 @@
 optimist           = require('optimist')
 async              = require('async')
 fs                 = require('fs')
-redis              = require('../connections/redis')
-{ constants }      = require('../common')
-logDebug           = require('../logging').logDebug('worker::dataExtractor')
-logError           = require('../logging').logError('worker::dataExtractor')
+redis              = require('../../connections/redis')
+{ constants }      = require('../../common')
+logDebug           = require('../../logging').logDebug('worker::dataExtractor')
+logError           = require('../../logging').logError('worker::dataExtractor')
 
 argv = null
 data = {}

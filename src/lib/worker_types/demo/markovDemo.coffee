@@ -2,9 +2,9 @@ optimist           = require('optimist')
 async              = require('async')
 readline           = require('readline')
 fs                 = require('fs')
-{ constants }      = require('../common')
-logDebug           = require('../logging').logDebug('worker::markovDemo')
-logError           = require('../logging').logError('worker::markovDemo')
+{ constants }      = require('../../common')
+logDebug           = require('../../logging').logDebug('worker::markovDemo')
+logError           = require('../../logging').logError('worker::markovDemo')
 
 params = null
 argv = null
