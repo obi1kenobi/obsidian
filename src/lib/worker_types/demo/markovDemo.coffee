@@ -60,7 +60,7 @@ processLine = (line) ->
 
 MarkovDemo =
   run: () ->
-    argv = optimist.usage('Demo Markov model based on given data')
+    argv = optimist.usage('Demo Markov model for letters in a word based on given data')
                    .demand(['input'])
                    .default('ngram', 4)
                    .default('mode', 'word')
