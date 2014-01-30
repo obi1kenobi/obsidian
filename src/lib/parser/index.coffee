@@ -50,6 +50,7 @@ for forming n-grams.
 See ideas.txt for detailed explanation of the internals.
 ###
 parse = (chunk) ->
+  chunk = chunk.toLowerCase()
   split = splitOnSeparators(chunk)
   arr = []
   for s in split

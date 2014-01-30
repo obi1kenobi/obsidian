@@ -54,3 +54,8 @@ describe 'Parser', () ->
     chunk = SEPARATORS.substr(0)
     expected = []
     runTest(chunk, expected)
+
+  it 'lowercases all results', () ->
+    chunk = 'Abc def ghi.\nHello world!'
+    expected = ['abc def ghi', 'hello world']
+    runTest(chunk, expected)
