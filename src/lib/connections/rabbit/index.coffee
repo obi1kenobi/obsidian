@@ -42,7 +42,8 @@ Rabbit =
             createExchanges callback
           (callback) ->
             createQueues callback
-        ], cb
+        ], (err, res) ->
+          cb(err, null)
       connection.on 'error', (err) ->
         logError 'Rabbit connection error:', err
     else

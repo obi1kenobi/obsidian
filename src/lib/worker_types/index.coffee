@@ -7,3 +7,4 @@ module.exports =
   dataExtractor: require('./tools/dataExtractor')
   vpHistogramDemo: require('./demo/vpHistogramDemo')
   wikiChunker: require('./markov_words/chunkers/wikiChunker')
+  standardParser: require('./markov_words/parsers/standardParser')
