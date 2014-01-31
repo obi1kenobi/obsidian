@@ -20,14 +20,14 @@ HASH_ALGORITHM = 'sha1'
 
 ###
 Takes a { chunk } message, hashes the chunk and parses it into sequences.
-Queues up a { hash, seq } object where hash is the base64 of the hash of the chunk,
-and seq is an array of sequences, each represented as a space-separated list of words.
+Queues up a { hash, seqs } object where hash is the base64 of the hash of the chunk,
+and seqs is an array of sequences, each represented as a space-separated list of words.
 ###
 processMessage = (message, headers, deliveryInfo, messageId) ->
   { chunk } = message
   hash = util.hashText(HASH_ALGORITHM, chunk)
-  seq = parse(chunk)
-  rabbit.publish constants.EXCHANGES.SEQUENCE_EXCHANCE, '*', {hash, seq}, (err, res) ->
+  seqs = parse(chunk)
+  rabbit.publish constants.EXCHANGES.SEQUENCE_EXCHANCE, '*', {hash, seqs}, (err, res) ->
     if err?
       logError 'Error when queueing up on Rabbit:', err
       rabbit.reject(messageId, true)
@@ -42,10 +42,7 @@ StandardParser =
 
     logDebug 'Worker starting...'
 
-    async.series [
-      (done) ->
-        rabbit.initialize done
-    ], (err, res) ->
+    rabbit.initialize (err, res) ->
       if err?
         logDebug 'Worker exiting with errors!'
         logError 'Error:', err
