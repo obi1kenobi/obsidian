@@ -3,10 +3,10 @@ Parsing text into sequences:
     `!,.:;"?/\|[]{}()*&<>
 
   2. throw out any words that have the following chars, and split the sequence around those words:
-    @#$%^0123456789
+    @#$%^0123456789_=+
     (probably split with regex: ^|whitespace -- non-whitespace* -- bad char -- non-whitespace* -- whitespace|$)
 
-  3. throw out any words that have chars that are not [a-zA-Z\-], and split around those words.
+  3. throw out any words that have chars that are not [a-zA-Z\-'], and split around those words.
     Log words thrown out here, just in case we are getting rid of good data.
 
   After this, we have sequences we want to build n-grams out of.

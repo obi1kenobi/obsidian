@@ -1,6 +1,6 @@
 USAGE = "
 Recurisvely reads wikipedia files from a given directory, chunks them,
-and sends each chunk to rabbit to be processed by a parser.\n
+ and sends each chunk to rabbit to be processed by a parser.\n
 "
 
 PARAMS = "Params:\n
@@ -63,14 +63,15 @@ processText = (text, chunkCreated, chunkEnqueued) ->
 
 processFile = (file, cb) ->
   isDone = false
-  hasError = false
   chunksInFlight = 0
 
   chunkEnqueued = () ->
     chunksInFlight--
-    if isDone and chunksInFlight == 0 and !hasError
+    if isDone and chunksInFlight == 0
       logDebug 'Finished processing file', file
       cb()
+      # prevent the callback from being called twice
+      cb = () ->
 
   chunkCreated = () ->
     chunksInFlight++
@@ -80,17 +81,19 @@ processFile = (file, cb) ->
   stream.on 'data', (chunk) ->
     text += chunk
     text = processText(text, chunkCreated, chunkEnqueued)
-  stream.on 'end', () ->
+  stream.once 'end', () ->
     text += '\n'
     text = processText(text, chunkCreated, chunkEnqueued)
     if text.length > 0
       chunkCreated()
       processChunk(text, chunkEnqueued)
     isDone = true
-  stream.on 'error', (err) ->
-    # prevent the callback from being called twice
-    hasError = true
+    stream.removeAllListeners('error').removeAllListeners('data')
+  stream.once 'error', (err) ->
+    stream.removeAllListeners('end').removeAllListeners('data')
     cb(err)
+    # prevent the callback from being called twice
+    cb = () ->
 
 processFiles = (files, cb) ->
   async.eachLimit files, MAX_PARALLEL_FILES, processFile, cb
@@ -106,7 +109,7 @@ WikiChunker =
     supportedExtension = (pathname) ->
       return path.extname(pathname) in EXTENSIONS
 
-    async.waterfall [
+    async.series [
       (done) ->
         rabbit.initialize done
       (done) ->
@@ -115,9 +118,6 @@ WikiChunker =
             done(err)
           else
             processFiles files, done
-      # async.waterfall is broken, can't put a waterfall inside another waterfall
-      #(files, done) ->
-      #  processFiles files, done
     ], (err, res) ->
       if err?
         logDebug 'Done with errors!'
