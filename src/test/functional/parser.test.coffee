@@ -33,6 +33,11 @@ describe 'Parser', () ->
       chunk.push validWord
       expected.push validWord
     chunk = chunk.join ' '
+
+    ###
+    chunk = ['a b#b a b$b a...']
+    expected = ['a', 'a', 'a' ...]
+    ###
     runTest(chunk, expected)
 
   it 'splits on and removes words with non-word chars', () ->
@@ -58,4 +63,14 @@ describe 'Parser', () ->
   it 'lowercases all results', () ->
     chunk = 'Abc def ghi.\nHello world!'
     expected = ['abc def ghi', 'hello world']
+    runTest(chunk, expected)
+
+  it 'ensure words with apostrophes are not discarded', () ->
+    chunk = "that's where it's at"
+    expected = [chunk]
+    runTest(chunk, expected)
+
+  it 'ensure words with dashes are not discarded', () ->
+    chunk = "high-performance code is awesome"
+    expected = [chunk]
     runTest(chunk, expected)
