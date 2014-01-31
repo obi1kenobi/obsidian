@@ -30,6 +30,18 @@
         }
       },
       {
+        "name": "obsidian.chunkExchange",
+        "options": {
+          "type": "fanout",
+          "durable": true,
+          "confirm": true,
+          "autoDelete": false
+        },
+        "publishOptions": {
+          "contentType": "application/json"
+        }
+      },
+      {
         "name": "obsidian.testExchange",
         "options": {
           "type": "fanout",
@@ -56,6 +68,23 @@
         "bindings": [
           {
             "exchange": "obsidian.lineExchange",
+            "routingKey": "*"
+          }
+        ]
+      },
+      {
+        "name": "obsidian.chunkQueue",
+        "options": {
+          "durable": true,
+          "autoDelete": false
+        },
+        "subscribeOptions": {
+          "ack": true,
+          "prefetchCount": 256
+        },
+        "bindings": [
+          {
+            "exchange": "obsidian.chunkExchange",
             "routingKey": "*"
           }
         ]

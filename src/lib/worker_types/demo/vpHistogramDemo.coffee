@@ -3,10 +3,10 @@ optimist              = require('optimist')
 async                 = require('async')
 fs                    = require('fs')
 readline              = require('readline')
-{ histogram, VPTree } = require('../analysis/words')
-{ constants }         = require('../common')
-logDebug              = require('../logging').logDebug('worker::vpHistogram')
-logError              = require('../logging').logError('worker::vpHistogram')
+{ histogram, VPTree } = require('../../analysis/words')
+{ constants }         = require('../../common')
+logDebug              = require('../../logging').logDebug('worker::vpHistogram')
+logError              = require('../../logging').logError('worker::vpHistogram')
 
 argv = null
 data = []

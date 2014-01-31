@@ -2,9 +2,9 @@ optimist           = require('optimist')
 async              = require('async')
 readline           = require('readline')
 fs                 = require('fs')
-{ constants }      = require('../common')
-logDebug           = require('../logging').logDebug('worker::markovDemo')
-logError           = require('../logging').logError('worker::markovDemo')
+{ constants }      = require('../../common')
+logDebug           = require('../../logging').logDebug('worker::markovDemo')
+logError           = require('../../logging').logError('worker::markovDemo')
 
 params = null
 argv = null
@@ -60,7 +60,7 @@ processLine = (line) ->
 
 MarkovDemo =
   run: () ->
-    argv = optimist.usage('Demo Markov model based on given data')
+    argv = optimist.usage('Demo Markov model for letters in a word based on given data')
                    .demand(['input'])
                    .default('ngram', 4)
                    .default('mode', 'word')

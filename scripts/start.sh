@@ -11,7 +11,7 @@ if [ "$0" != "./scripts/start.sh" ]; then
 fi
 
 # run build script
-chmod +x ./scripts/build && ./scripts/build
+chmod +x ./scripts/build.sh && ./scripts/build.sh
 
 echo "Starting..."
 echo ""
