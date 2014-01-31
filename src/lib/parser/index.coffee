@@ -52,16 +52,11 @@ See ideas.txt for detailed explanation of the internals.
 parse = (chunk) ->
   chunk = chunk.toLowerCase()
   split = splitOnSeparators(chunk)
-  arr = []
-  for s in split
-    arr.push discardIllegalChars(s)
 
-  split = _.flatten(arr)
-  arr = []
-  for s in split
-    arr.push allowOnlyWordChars(s)
+  split = _.flatten(discardIllegalChars(s) for s in split)
 
-  split = _.flatten(arr)
+  split = _.flatten(allowOnlyWordChars(s) for s in split)
+
   arr = []
   for s in split
     s = removeSurplusWhitespace(s)
