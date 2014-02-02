@@ -39,7 +39,9 @@
   },
   "devDependencies": {
     "chai": "*",
-    "mocha": "*"
+    "chai-things": "*",
+    "mocha": "*",
+    "temp": "0.6.0"
   },
   "license": "proprietary",
   "engines": {
