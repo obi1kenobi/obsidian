@@ -61,7 +61,7 @@ describe 'Append-only', () ->
 
     runTest = (err, writer, cb) ->
       expectedData = [generateTestObject(), {}, generateTestObject(), generateTestObject()]
-      should.not.exist err
+      should.not.exist err  # this error would be generated on writer creation
       should.exist writer
       async.each expectedData, (item, callback) ->
         writer.write item, callback
@@ -78,12 +78,10 @@ describe 'Append-only', () ->
           cb()
 
     it 'writes and reads all entries when in a single file', (cb) ->
-      console.log testPath
       hyperfile.createWriter testPath, (err, writer) ->
         runTest err, writer, cb
 
     it 'writes and reads all entries when in multiple files', (cb) ->
       hintSize = 10
-      console.log testPath
       hyperfile.createWriter testPath, hintSize, (err, writer) ->
         runTest err, writer, cb

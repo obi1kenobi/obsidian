@@ -17,44 +17,38 @@ numericSort = (array) ->
   array.sort (a, b) -> a-b
 
 reorderFiles = (files, cb) ->
-  async.map files, (item, callback) ->
-    filename = path.basename(item, EXTENSION)
-    fileNum = null
+  fileMap = {}
+  fileNumbers = []
+
+  for f in files
+    fileName = path.basename(f, EXTENSION)
     try
-      fileNum = parseInt(filename)
+      fileNum = parseInt(fileName)
+      fileNumbers.push(fileNum)
+      fileMap[fileNum] = f
     catch e
-      callback(e)
-      callback = () ->
-      return
-    callback(null, fileNum)
-  , (err, fileNumbers) ->
-    if err?
-      cb(err)
-      cb = () ->
-      return
-    else
-      # coffeescript doesn't have object comprehensions :'(
-      fileMap = {}
-      for i in [0...files.length]
-        fileMap[fileNumbers[i]] = files[i]
-      numericSort(fileNumbers)
-      try
-        validateFiles(fileNumbers)
-      catch e
-        cb(e)
-        cb = () ->
-        return
-      fileOrder = (fileMap[i] for i in [0...files.length])
-      cb(null, fileOrder)
+      # no-op, ignore this file
+
+  numericSort(fileNumbers)
+
+  try
+    validateFiles(fileNumbers)
+  catch e
+    cb(e)
+    return
+
+  fileOrder = (fileMap[i] for i in [0...files.length])
+  cb(null, fileOrder)
+
 
 readFile = (file, iterator, cb) ->
   stream = fs.createReadStream(file)
   text = ''
   stream.on 'data', (chunk) ->
     text += chunk
-    result = serializer.parse(text)
-    text = result.remainder
-    async.each result.entries, iterator, (err, res) ->
+    { remainder, entries } = serializer.parse(text)
+    text = remainder
+    async.each entries, iterator, (err, res) ->
       if text != '' and !err?
         err = new Error("Unreadable entry at the end of file #{file}: #{text}")
       if err?
@@ -63,7 +57,6 @@ readFile = (file, iterator, cb) ->
         stream.close()
         cb(err)
         cb = () ->
-        iterator = () ->
   stream.once 'end', () ->
     stream.removeAllListeners()
     cb()
@@ -123,7 +116,7 @@ class HyperfileWriter
         @_openExistingFile()
 
   _createFileName: () ->
-    return path.resolve(@_path, '' + @_lastFileNumber + EXTENSION)
+    return path.resolve(@_path, @_lastFileNumber + EXTENSION)
 
   _inspectFile: () ->
     fileName = @_createFileName()
