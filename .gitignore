@@ -10,6 +10,8 @@ lib-cov
 *.pyo
 
 bin/*
+logs/*
+data/*
 
 pids
 logs
