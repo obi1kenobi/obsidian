@@ -16,17 +16,17 @@ fi
 chmod +x ./scripts/build.sh && ./scripts/build.sh
 
 # remove existing logs
-if [ -d ./logs/parser ]; then
+if [ -d /var/log/obsidian/parser ]; then
   echo "Removing existing logs..."
-  rm -r ./logs/parser
+  rm -r /var/log/obsidian/parser
 fi
 
-mkdir -p ./logs/parser
+mkdir -p /var/log/obsidian/parser
 
-node ./bin/index.js --type=standardParser >./logs/parser/1-stdout.log 2>./logs/parser/1-stderr.log &
-node ./bin/index.js --type=standardParser >./logs/parser/2-stdout.log 2>./logs/parser/2-stderr.log &
-node ./bin/index.js --type=standardParser >./logs/parser/3-stdout.log 2>./logs/parser/3-stderr.log &
-# node ./bin/index.js --type=standardParser >./logs/parser/4-stdout.log 2>./logs/parser/4-stderr.log &
+node ./bin/index.js --type=standardParser >/var/log/obsidian/parser/1-stdout.log 2>/var/log/obsidian/parser/1-stderr.log &
+node ./bin/index.js --type=standardParser >/var/log/obsidian/parser/2-stdout.log 2>/var/log/obsidian/parser/2-stderr.log &
+node ./bin/index.js --type=standardParser >/var/log/obsidian/parser/3-stdout.log 2>/var/log/obsidian/parser/3-stderr.log &
+# node ./bin/index.js --type=standardParser >/var/log/obsidian/parser/4-stdout.log 2>/var/log/obsidian/parser/4-stderr.log &
 
 sleep 1
-tail -F -n 1000 logs/parser/*stderr*
+tail -F -n 1000 /var/log/obsidian/parser/*stderr*

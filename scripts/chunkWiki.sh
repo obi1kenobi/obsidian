@@ -16,15 +16,15 @@ fi
 chmod +x ./scripts/build.sh && ./scripts/build.sh
 
 # remove existing logs
-if [ -d ./logs/chunkAllWiki ]; then
+if [ -d /var/log/obsidian/chunkAllWiki ]; then
   echo "Removing existing logs..."
-  rm -r ./logs/chunkAllWiki
+  rm -r /var/log/obsidian/chunkAllWiki
 fi
 
-mkdir -p ./logs/chunkAllWiki
+mkdir -p /var/log/obsidian/chunkAllWiki
 
 # avoid memory leaks by exiting after 25 files of 20MB each :)
-node ./bin/index.js --type=wikiChunker --path=./data/wiki_all/ >./logs/chunkAllWiki/stdout.log 2>./logs/chunkAllWiki/stderr.log &
+node ./bin/index.js --type=wikiChunker --path=./data/wiki_all/ >/var/log/obsidian/chunkAllWiki/stdout.log 2>/var/log/obsidian/chunkAllWiki/stderr.log &
 
 sleep 1
-tail -F -n 1000 logs/chunkAllWiki/*
+tail -F -n 1000 /var/log/obsidian/chunkAllWiki/*
