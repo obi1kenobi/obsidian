@@ -3,40 +3,35 @@
 # stop immediately if any process returns non-zero exit code
 set -e
 
-# Make sure only root can run our script
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root."
-   exit 1
-fi
-
 # add redis package to apt
-echo "Adding Redis package to apt..."
 pushd /etc/apt/sources.list.d/
 if [ ! -f ./dotdeb.org.list ]; then
-  touch ./dotdeb.org.list
-  echo "deb http://packages.dotdeb.org wheezy all" >> ./dotdeb.org.list
-  echo "deb-src http://packages.dotdeb.org wheezy all" >> ./dotdeb.org.list
+  echo "Adding Redis package to apt..."
+  echo "deb http://packages.dotdeb.org wheezy all" | sudo tee -a ./dotdeb.org.list > /dev/null
+  echo "deb-src http://packages.dotdeb.org wheezy all" | sudo tee -a ./dotdeb.org.list > /dev/null
 fi
-wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+wget -q -O - http://www.dotdeb.org/dotdeb.gpg | sudo apt-key add -
 popd
 
 # add rabbit package to apt
-echo "Adding Rabbit package to apt..."
 pushd /etc/apt/sources.list.d/
 if [ ! -f ./rabbitmq.com.list ]; then
-  touch ./rabbitmq.com.list
-  echo "deb http://www.rabbitmq.com/debian/ testing main" >> ./rabbitmq.com.list
+  echo "Adding Rabbit package to apt..."
+  echo "deb http://www.rabbitmq.com/debian/ testing main" | sudo tee -a ./rabbitmq.com.list > /dev/null
 fi
-wget -q -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
+wget -q -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | sudo apt-key add -
 popd
 
 # update apt and install packages
-apt-get update
-apt-get install -y build-essential openssl htop curl make vim nautilus-open-terminal git gitk redis-server rabbitmq-server
+sudo apt-get update
+sudo apt-get install -y build-essential openssl htop curl make vim nautilus-open-terminal git gitk redis-server rabbitmq-server
 
 # enable rabbit admin console on port 15672 and restart
-rabbitmq-plugins enable rabbitmq_management
-service rabbitmq-server restart
+sudo rabbitmq-plugins enable rabbitmq_management
+sudo service rabbitmq-server restart
+
+# workers will write logs to /var/log, make sure they have access
+sudo chmod 777 /var/log
 
 if [ ! -d ~/.nvm ]; then
   # monkey-patch .profile so nvm doesn't cause infinite login loop when it's sourced
