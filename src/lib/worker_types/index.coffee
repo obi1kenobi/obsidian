@@ -8,3 +8,4 @@ module.exports =
   vpHistogramDemo: require('./demo/vpHistogramDemo')
   wikiChunker: require('./markov_words/chunkers/wikiChunker')
   standardParser: require('./markov_words/parsers/standardParser')
+  sequenceWriter: require('./markov_words/writers/sequenceWriter')

@@ -43,7 +43,7 @@ Rabbit =
           (callback) ->
             createQueues callback
         ], (err, res) ->
-          cb(err, null)
+          cb(err)
       connection.on 'error', (err) ->
         logError 'Rabbit connection error:', err
     else
@@ -56,7 +56,7 @@ Rabbit =
   ###
   publish: (exchange, routingKey, message, cb) ->
     exchanges[exchange].publish routingKey, message, publishOptions[exchange], (hasError, err) ->
-      cb(err, null)
+      cb(err)
 
   ###
   Subscribe to the given queue name.
